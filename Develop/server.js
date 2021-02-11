@@ -122,8 +122,8 @@ notes.forEach(element => {
 //   const newNote=req.body;
 //   notes.push(newNote);
 //   console.log(notes);
-// const noteJson=JSON.stringify(notes);
-//  fs.writeFileSync('./db/db.json',noteJson);
+ const noteUpdate=JSON.stringify(notes);
+  fs.writeFileSync('./db/db.json',noteUpdate);
   res.json(true);
 });
 
