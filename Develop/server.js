@@ -3,6 +3,7 @@
 const express = require("express");
 const path = require("path");
 const fs=require('fs');
+const { isNullOrUndefined } = require("util");
 
 // Sets up the Express App
 // =============================================================
@@ -13,17 +14,10 @@ const PORT = process.env.port || 3000;
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-// Star Wars Characters (DATA)
+// Notes (DATA)
 // =============================================================
-// const characters = [
-//   {
-//     routeName: "yoda",
-//     name: "Yoda",
-//     role: "Jedi Master",
-//     age: 900,
-//     forcePoints: 2000
-//   }
-// ];
+const notes=[];
+let noteId="";
 
 // Routes
 // =============================================================
@@ -40,7 +34,10 @@ app.get("/notes", function(req, res) {
 // Displays all notes
 app.get("/api/notes", function(req, res) {
   const data=fs.readFileSync('./db/db.json','utf-8');
-  console.log(data);
+  // console.log(data);
+  // for(x in data) {
+  //      notes.push(x);
+  // }
   return res.json(data);
 });
 
@@ -58,23 +55,77 @@ app.get("/api/notes", function(req, res) {
 
 //   return res.json(false);
 // });
-
-// // Create New Characters - takes in JSON input
-// app.post("/api/characters", function(req, res) {
-//   // req.body hosts is equal to the JSON post sent from the user
-//   // This works because of our body parsing middleware
-//   const newCharacter = req.body;
-
-//   // Using a RegEx Pattern to remove spaces from newCharacter
-//   // You can read more about RegEx Patterns later https://www.regexbuddy.com/regex.html
-//   newCharacter.routeName = newCharacter.name.replace(/\s+/g, "").toLowerCase();
-
-//   console.log(newCharacter);
-
-//   characters.push(newCharacter);
-
-//   res.json(newCharacter);
-// });
+// Create New note - takes in JSON input
+app.post("/api/notes", function(req, res) {
+  // req.body hosts is equal to the JSON post sent from the user
+  // This works because of our body parsing middleware
+  const dataValue=(fs.readFileSync('./db/db.json','utf-8'));
+  notes.length=0;
+  if(dataValue.length)
+  {
+    JSON.parse(dataValue).forEach(element => {
+    notes.push(element);
+  });
+}
+  console.log(notes);
+  const maxId=notes.map(ele=>ele.id);
+  console.log(maxId.length);
+  if(maxId.length!=0)
+  {
+    req.body.id=Math.max(...maxId)+1;
+  }
+  else
+  {
+    req.body.id=1;
+  //  console.log("Node id"+nodeId);
+  }
+  //req.body.id=parseInt(noteId);
+  const newNote=req.body;
+  notes.push(newNote);
+  console.log(notes);
+const noteJson=JSON.stringify(notes);
+ fs.writeFileSync('./db/db.json',noteJson);
+  res.json(true);
+});
+// delete note - takes in JSON input
+app.delete("/api/notes/:id", function(req, res) {
+  console.log(req.params.id);
+  // req.body hosts is equal to the JSON post sent from the user
+  // This works because of our body parsing middleware
+   const dataValue=(fs.readFileSync('./db/db.json','utf-8'));
+ notes.length=0;
+  if(dataValue.length)
+  {
+    JSON.parse(dataValue).forEach(element => {
+    notes.push(element);
+  });
+}
+notes.forEach(element => {
+  if(element.id==req.params.id)
+  {
+    notes.pop(element);
+  }
+});
+//   console.log(notes);
+//   const maxId=notes.map(ele=>ele.id);
+//   console.log(maxId.length);
+//   if(maxId.length!=0)
+//   {
+//     req.body.id=Math.max(...maxId)+1;
+//   }
+//   else
+//   {
+//     req.body.id=1;
+//   //  console.log("Node id"+nodeId);
+//   }
+//   //req.body.id=parseInt(noteId);
+//   const newNote=req.body;
+//   notes.push(newNote);
+//   console.log(notes);
+// const noteJson=JSON.stringify(notes);
+//  fs.writeFileSync('./db/db.json',noteJson);
+  res.json(true);
+});
 
 // Starts the server to begin listening
 // =============================================================
