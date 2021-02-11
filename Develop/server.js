@@ -3,7 +3,6 @@
 const express = require("express");
 const path = require("path");
 const fs=require('fs');
-const { isNullOrUndefined } = require("util");
 
 // Sets up the Express App
 // =============================================================
@@ -34,32 +33,13 @@ app.get("/notes", function(req, res) {
 // Displays all notes
 app.get("/api/notes", function(req, res) {
   const data=fs.readFileSync('./db/db.json','utf-8');
-  // console.log(data);
-  // for(x in data) {
-  //      notes.push(x);
-  // }
   return res.json(data);
 });
-
-// // Displays a single character, or returns false
-// app.get("/api/characters/:character", function(req, res) {
-//   const chosen = req.params.character;
-
-//   console.log(chosen);
-
-//   for (const i = 0; i < characters.length; i++) {
-//     if (chosen === characters[i].routeName) {
-//       return res.json(characters[i]);
-//     }
-//   }
-
-//   return res.json(false);
-// });
 // Create New note - takes in JSON input
 app.post("/api/notes", function(req, res) {
   // req.body hosts is equal to the JSON post sent from the user
   // This works because of our body parsing middleware
-  const dataValue=(fs.readFileSync('./db/db.json','utf-8'));
+  const dataValue=fs.readFileSync('./db/db.json','utf-8');
   notes.length=0;
   if(dataValue.length)
   {
@@ -77,9 +57,7 @@ app.post("/api/notes", function(req, res) {
   else
   {
     req.body.id=1;
-  //  console.log("Node id"+nodeId);
   }
-  //req.body.id=parseInt(noteId);
   const newNote=req.body;
   notes.push(newNote);
   console.log(notes);
@@ -106,22 +84,6 @@ notes.forEach(element => {
     notes.pop(element);
   }
 });
-//   console.log(notes);
-//   const maxId=notes.map(ele=>ele.id);
-//   console.log(maxId.length);
-//   if(maxId.length!=0)
-//   {
-//     req.body.id=Math.max(...maxId)+1;
-//   }
-//   else
-//   {
-//     req.body.id=1;
-//   //  console.log("Node id"+nodeId);
-//   }
-//   //req.body.id=parseInt(noteId);
-//   const newNote=req.body;
-//   notes.push(newNote);
-//   console.log(notes);
  const noteUpdate=JSON.stringify(notes);
   fs.writeFileSync('./db/db.json',noteUpdate);
   res.json(true);
