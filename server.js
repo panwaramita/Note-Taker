@@ -62,7 +62,7 @@ app.post("/api/notes", function(req, res) {
   notes.push(newNote);
   console.log(notes);
 const noteJson=JSON.stringify(notes);
- fs.writeFileSync('./db/db.json',noteJson);
+ fs.writeFileSync('./Develop/db/db.json',noteJson);
   res.json(true);
 });
 // delete note - takes in JSON input
@@ -70,7 +70,7 @@ app.delete("/api/notes/:id", function(req, res) {
   console.log(req.params.id);
   // req.body hosts is equal to the JSON post sent from the user
   // This works because of our body parsing middleware
-   const dataValue=(fs.readFileSync('./db/db.json','utf-8'));
+   const dataValue=(fs.readFileSync('./Develop/db/db.json','utf-8'));
  notes.length=0;
   if(dataValue.length)
   {
