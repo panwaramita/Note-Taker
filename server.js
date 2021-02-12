@@ -85,7 +85,7 @@ notes.forEach(element => {
   }
 });
  const noteUpdate=JSON.stringify(notes);
-  fs.writeFileSync('./db/db.json',noteUpdate);
+  fs.writeFileSync('./Develop/db/db.json',noteUpdate);
   res.json(true);
 });
 
