@@ -32,14 +32,14 @@ app.get("/notes", function(req, res) {
 
 // Displays all notes
 app.get("/api/notes", function(req, res) {
-  const data=fs.readFileSync('./db/db.json','utf-8');
+  const data=fs.readFileSync('./Develop/db/db.json','utf-8');
   return res.json(data);
 });
 // Create New note - takes in JSON input
 app.post("/api/notes", function(req, res) {
   // req.body hosts is equal to the JSON post sent from the user
   // This works because of our body parsing middleware
-  const dataValue=fs.readFileSync('./db/db.json','utf-8');
+  const dataValue=fs.readFileSync('./Develop/db/db.json','utf-8');
   notes.length=0;
   if(dataValue.length)
   {
