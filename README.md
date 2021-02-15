@@ -30,5 +30,5 @@
 
 ## Link
 
-* Link: https://app-note-taker-for-u.herokuapp.com/notes
+* Link: https://app-note-taker-for-u.herokuapp.com/
 
